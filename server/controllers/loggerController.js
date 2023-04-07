@@ -1,4 +1,4 @@
-const Log = require('../models/logModel');
+const Log = require("../models/logModel");
 
 /**
  * @desc   Get all logs
@@ -7,7 +7,8 @@ const Log = require('../models/logModel');
  */
 const getLogs = async (req, res, next) => {
 	try {
-		const logs = await Log.find();
+		// get users logs
+		const logs = await Log.find({ user: req.user.id });
 		return res.status(200).json({
 			success: true,
 			count: logs.length,
@@ -16,7 +17,7 @@ const getLogs = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error',
+			error: "Server Error",
 			message: err.message,
 		});
 	}
@@ -48,24 +49,25 @@ const addLog = async (req, res, next) => {
 	// an Array of objects will work for the exerciseMap value
 	try {
 		const log = await Log.create({
-			exerciseMap: exerciseMap,
-			user: user,
+			exerciseMap: req.body.exerciseMap,
+			user: req.user.id,
 		});
 		return res.status(201).json({
 			success: true,
 			data: log,
 		});
 	} catch (err) {
-		if (err.name === 'ValidationError') {
+		if (err.name === "ValidationError") {
 			const messages = Object.values(err.errors).map((val) => val.message);
 			return res.status(400).json({
 				success: false,
 				error: messages,
+				stack: err.stack,
 			});
 		} else {
 			return res.status(500).json({
 				success: false,
-				error: 'Server Error',
+				error: "Server Error",
 				message: err.message,
 			});
 		}

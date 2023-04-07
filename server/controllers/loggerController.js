@@ -1,5 +1,5 @@
-const Log = require("../models/logModel");
-
+const Log = require('../models/logModel');
+const User = require('../models/usersModel');
 /**
  * @desc   Get all logs
  * @route  GET /api/fitLog
@@ -17,7 +17,7 @@ const getLogs = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: "Server Error",
+			error: 'Server Error',
 			message: err.message,
 		});
 	}
@@ -29,23 +29,6 @@ const getLogs = async (req, res, next) => {
  * @access Public
  */
 const addLog = async (req, res, next) => {
-	// const exerciseMap = {
-	// 	exercise1: {
-	// 		weightUsed: 100,
-	// 		repsDone: 10,
-	// 		setsDone: 3,
-	// 		name: 'Bench Press',
-	// 		muscleGroup: 'Chest',
-	// 	},
-	// 	exercise2: {
-	// 		weightUsed: 75,
-	// 		repsDone: 8,
-	// 		setsDone: 3,
-	// 		name: 'Chest Fly',
-	// 		muscleGroup: 'Chest',
-	// 	},
-	// };
-	// const user = 'testUser';
 	// an Array of objects will work for the exerciseMap value
 	try {
 		const log = await Log.create({
@@ -57,7 +40,7 @@ const addLog = async (req, res, next) => {
 			data: log,
 		});
 	} catch (err) {
-		if (err.name === "ValidationError") {
+		if (err.name === 'ValidationError') {
 			const messages = Object.values(err.errors).map((val) => val.message);
 			return res.status(400).json({
 				success: false,
@@ -67,14 +50,96 @@ const addLog = async (req, res, next) => {
 		} else {
 			return res.status(500).json({
 				success: false,
-				error: "Server Error",
+				error: 'Server Error',
 				message: err.message,
 			});
 		}
 	}
 };
 
+/**
+ * @desc Update a log, right now the entire log is replaced with whatever is passed in
+ * I will update the desired fields.
+ * @route  PUT /api/fitLog/update:id
+ * @access Public
+ */
+const updateLog = async (req, res, next) => {
+	// an Array of objects will work for the exerciseMap value
+	try {
+		const log = await Log.findById(req.params.id);
+		if (!log) {
+			res.status(400);
+			throw new Error('Log not found');
+		}
+
+		const user = await User.findById(req.user.id);
+		// check for user
+		if (!user) {
+			res.status(401);
+			throw new Error('User not found');
+		}
+		// ensure logged in user is the owner of the log
+		if (log.user.toString() !== req.user.id) {
+			res.status(401);
+			throw new Error('User not authorized');
+		}
+		const updatedLog = await Log.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+			runValidators: true,
+		});
+
+		res.status(200).json({ message: 'updated', data: updatedLog });
+	} catch (err) {
+		if (err.name === 'ValidationError') {
+			const messages = Object.values(err.errors).map((val) => val.message);
+			return res.status(400).json({
+				success: false,
+				error: messages,
+				stack: err.stack,
+			});
+		} else {
+			return res.status(500).json({
+				success: false,
+				error: 'Server Error',
+				message: err.message,
+			});
+		}
+	}
+};
+
+/**
+ * @desc Delete a log
+ * @route  DELETE /api/fitLog/delete:id
+ * @access Public
+ */
+const deleteLog = async (req, res, next) => {
+	try {
+		const log = await Log.findById(req.params.id);
+		if (!log) {
+			res.status(400);
+			throw new Error('Log not found');
+		}
+		const user = await User.findById(req.user.id);
+		// check for user
+		if (!user) {
+			res.status(401);
+			throw new Error('User not found');
+		}
+		// ensure logged in user is the owner of the log
+		if (log.user.toString() !== req.user.id) {
+			res.status(401);
+			throw new Error('User not authorized');
+		}
+		const deletedLog = await Log.findByIdAndDelete(req.params.id);
+		res.status(200).json({ mesage: 'deleted', data: deletedLog });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+};
+
 module.exports = {
 	getLogs,
 	addLog,
+	updateLog,
+	deleteLog,
 };

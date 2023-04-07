@@ -1,8 +1,9 @@
-const path = require('path');
-const colors = require('colors');
-const express = require('express');
-const { config } = require('dotenv');
-const connectDB = require('./config/db');
+const path = require("path");
+const colors = require("colors");
+const express = require("express");
+const cors = require("cors");
+const { config } = require("dotenv");
+const connectDB = require("./config/db");
 config();
 const PORT = process.env.PORT || 3001;
 
@@ -11,12 +12,14 @@ connectDB();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // use routers
-app.use('/api/tracker', require('./routes/trackerRoutes'));
+app.use("/api/tracker", require("./routes/trackerRoutes"));
 
-app.use('/api/fitLog', require('./routes/logRoutes'));
+app.use("/api/fitLog", require("./routes/logRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 // listen to port
 app.listen(PORT, () => {
 	console.log(`server listening on ${PORT}`);

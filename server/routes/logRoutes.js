@@ -1,8 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { getLogs, addLog } = require('../controllers/loggerController');
+const { getLogs, addLog } = require("../controllers/loggerController");
+const { protect } = require("../middleware/authMiddleware");
 
-router.get('/', getLogs);
-router.post('/add', addLog);
+router.get("/", protect, getLogs);
+router.post("/add", protect, addLog);
 
 module.exports = router;

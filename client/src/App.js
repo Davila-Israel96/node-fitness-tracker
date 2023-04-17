@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import Navbar from './components/Navbar';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Register from "./pages/Register";
 
 function App() {
 	const getExercises = () => {
-		axios.get('http://localhost:3001/api/tracker').then((res) => {
+		axios.get("http://localhost:3001/api/tracker").then((res) => {
 			console.log(res.data);
 		});
 	};
@@ -14,12 +16,11 @@ function App() {
 	}, []);
 
 	return (
-		<div className='App'>
-			<header className='App-header'>
-				<Navbar />
-				<h1>Tracker</h1>
-				<p></p>
-			</header>
+		<div className="App">
+			<Navbar />
+			<Routes>
+				<Route path="/" element={<Register />} />
+			</Routes>
 		</div>
 	);
 }

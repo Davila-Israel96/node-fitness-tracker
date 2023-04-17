@@ -2,9 +2,9 @@ const path = require("path");
 const colors = require("colors");
 const express = require("express");
 const cors = require("cors");
-const { config } = require("dotenv");
+const dotenv = require("dotenv").config();
 const connectDB = require("./config/db");
-config();
+
 const PORT = process.env.PORT || 3001;
 
 // connect to database

@@ -4,7 +4,7 @@ const User = require("../models/usersModel");
 
 /**
  * @desc Register a user
- * @route POST /api/users
+ * @route POST /api/users/register
  * @access Public
  */
 const registerUser = async (req, res) => {
@@ -86,13 +86,7 @@ const loginUser = async (req, res) => {
  */
 const getMe = async (req, res) => {
 	try {
-		const { _id, name, email } = await User.findById(req.user.id);
-
-		res.status(200).json({
-			id: _id,
-			name,
-			email,
-		});
+		res.status(200).json(req.user);
 	} catch (error) {
 		res.json({ message: error.message });
 	}

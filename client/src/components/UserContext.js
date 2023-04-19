@@ -46,7 +46,7 @@ const userReducer = (state, action) => {
 };
 
 //Get user from localStorage
-const user = "";
+const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
 	user: user ? user : null,
@@ -66,12 +66,44 @@ export const UserContextProvider = ({ children }) => {
 				dispatch({ type: "REGISTER", payload: response });
 			}
 		} catch (error) {
-			dispatch({ type: "ERROR", payload: error.message });
+			const message =
+				(error.response && error.response.data) ||
+				error.message ||
+				error.toString();
+			dispatch({ type: "ERROR", payload: message });
 			console.log(error);
 		}
 	}
 
-	const value = { registerUser, ...state };
+	async function loginUser(userData) {
+		try {
+			const response = await authService.loginUser(userData);
+			if (response) {
+				dispatch({ type: "LOGIN", payload: response });
+			}
+		} catch (error) {
+			const message =
+				(error.response && error.response.data) ||
+				error.message ||
+				error.toString();
+			dispatch({ type: "ERROR", payload: message });
+			console.log(error);
+		}
+	}
+	async function logoutUser() {
+		try {
+			await authService.logoutUser();
+			dispatch({ type: "LOGOUT" });
+		} catch (error) {
+			const message =
+				(error.response && error.response.data) ||
+				error.message ||
+				error.toString();
+			dispatch({ type: "ERROR", payload: message });
+			console.log(error);
+		}
+	}
+	const value = { registerUser, logoutUser, loginUser, ...state, dispatch };
 	return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 export default UserContext;

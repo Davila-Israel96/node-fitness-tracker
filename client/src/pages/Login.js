@@ -4,31 +4,29 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
 
-function Register() {
+function Login() {
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
-		name: "",
 		email: "",
 		password: "",
-		passwordConfirm: "",
 	});
-	const { registerUser, ...state } = useContext(UserContext);
+	const { loginUser, ...state } = useContext(UserContext);
 	const { user, isError, isSuccess, message, isLoading } = state;
 
 	//destructure formData
-	const { name, email, password, passwordConfirm } = formData;
+	const { email, password } = formData;
 
 	const infoChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const submitUser = async (e) => {
+	const login = async (e) => {
 		e.preventDefault();
 
-		if (password !== passwordConfirm) {
-			console.log("Passwords do not match");
+		if (password === "") {
+			toast.warn("Please enter a password >:(");
 		} else {
-			registerUser(formData);
+			loginUser(formData);
 		}
 	};
 
@@ -37,7 +35,7 @@ function Register() {
 			console.log("error");
 			toast.error(message);
 		}
-		if (isSuccess || user) {
+		if (user) {
 			navigate("/");
 		}
 	}, [user, isError, isSuccess, message, isLoading]);
@@ -47,31 +45,17 @@ function Register() {
 			<section className="text-center mt-5">
 				<h1>
 					<FaUser className="fs-2" />
-					Register
+					Log In
 				</h1>
-				<p>Please create an account</p>
+				<p>Log in to view your progress</p>
 			</section>
 			<section>
-				<form className="row" onSubmit={submitUser}>
+				<form className="row" onSubmit={login}>
 					<div className="col-sm-4 mx-auto">
 						<div className="card text-center">
 							<div className="card-body d-flex flex-column mx-auto">
 								<div className="mb-4">
 									<label htmlFor="name" className="form-label">
-										Username
-									</label>
-									<input
-										type="text"
-										className="form-control text-center"
-										name="name"
-										id="name"
-										value={name}
-										placeholder="enter your name"
-										onChange={infoChange}
-									/>
-								</div>
-								<div className="mb-4">
-									<label htmlFor="email" className="form-label">
 										Email
 									</label>
 									<input
@@ -80,7 +64,7 @@ function Register() {
 										name="email"
 										id="email"
 										value={email}
-										placeholder="enter your email"
+										placeholder="enter your Email"
 										onChange={infoChange}
 									/>
 								</div>
@@ -98,23 +82,9 @@ function Register() {
 										onChange={infoChange}
 									/>
 								</div>
-								<div className="mb-4">
-									<label htmlFor="passwordConfirm" className="form-label">
-										Confirm Password
-									</label>
-									<input
-										type="text"
-										className="form-control text-center"
-										name="passwordConfirm"
-										id="passwordConfirm"
-										value={passwordConfirm}
-										placeholder="confirm your password"
-										onChange={infoChange}
-									/>
-								</div>
 								<div className="text-center">
 									<button type="submit" className="btn btn-success">
-										Submit
+										Login
 									</button>
 								</div>
 							</div>
@@ -126,4 +96,4 @@ function Register() {
 	);
 }
 
-export default Register;
+export default Login;

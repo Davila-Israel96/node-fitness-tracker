@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { GiWeightLiftingUp } from "react-icons/gi";
-import { Link } from "react-router-dom";
+import { FiLogOut, FiLogIn } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
 function Navbar() {
+	const navigate = useNavigate();
+	const { logoutUser, ...state } = useContext(UserContext);
+	const { user } = state;
+
+	const logout = (e) => {
+		e.preventDefault();
+
+		logoutUser();
+		navigate("/login");
+	};
+
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div className="container-fluid">
@@ -20,7 +33,7 @@ function Navbar() {
 					<span className="navbar-toggler-icon"></span>
 				</button>
 				<div className="collapse navbar-collapse" id="navbarNav">
-					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
+					<ul className="navbar-nav d-flex flex-row me-auto mb-2 mb-lg-0">
 						<li className="nav-item text-light">
 							<Link className="nav-link" to="/exercises">
 								Exercises
@@ -31,11 +44,32 @@ function Navbar() {
 								Logs
 							</Link>
 						</li>
-						<li>
-							<Link className="nav-link" to="/register">
-								Register
-							</Link>
-						</li>
+					</ul>
+					<ul className="navbar-nav d-flex flex-row-reverse mb-2 mb-lg-0">
+						{user ? (
+							<li>
+								<button
+									type="button"
+									className="btn text-light"
+									onClick={logout}>
+									<FiLogOut className="fs-4 me-2" />
+								</button>
+							</li>
+						) : (
+							<>
+								<li>
+									<Link className="nav-link" to="/register">
+										Register
+									</Link>
+								</li>
+								<li>
+									<Link className="nav-link" to="/login">
+										<FiLogIn className="fs-4 me-2" />
+										Log In
+									</Link>
+								</li>
+							</>
+						)}
 					</ul>
 				</div>
 			</div>

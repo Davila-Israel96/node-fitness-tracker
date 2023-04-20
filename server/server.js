@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // use routers
-app.use("/api/tracker", require("./routes/trackerRoutes"));
+app.use("/api/exercises", require("./routes/exerciseRoutes"));
 
 app.use("/api/fitLog", require("./routes/logRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));

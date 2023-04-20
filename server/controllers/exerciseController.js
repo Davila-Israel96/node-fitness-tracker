@@ -1,13 +1,14 @@
-const Exercise = require('../models/exerciseModel');
+const Exercise = require("../models/exerciseModel");
 
 /**
- * @desc   Get all exercises
- * @route  GET /api/tracker
+ * @desc   Get all exercises for associated user
+ * @route  GET /api/exercises/:user
  * @access Public
  */
 const getExercises = async (req, res, next) => {
+	const user = req.user.name;
 	try {
-		const exercises = await Exercise.find();
+		const exercises = await Exercise.find({ user: user });
 		return res.status(200).json({
 			success: true,
 			count: exercises.length,
@@ -16,13 +17,44 @@ const getExercises = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error',
+			error: "Server Error",
+		});
+	}
+};
+
+/**
+ * @desc   Get all exercises
+ * @route  GET /api/exercises/:user/:name
+ * @access Public
+ */
+const getExercise = async (req, res, next) => {
+	const user = req.body.user;
+	const name = req.body.name;
+	try {
+		const exercise = await Exercise.find({
+			user: user,
+			name: name,
+		});
+		if (!exercise) {
+			return res.status(404).json({
+				success: false,
+				error: "No exercise found",
+			});
+		}
+		return res.status(200).json({
+			success: true,
+			data: exercise,
+		});
+	} catch (err) {
+		return res.status(500).json({
+			success: false,
+			error: "Server Error",
 		});
 	}
 };
 /**
  * @desc   Create an exercise
- * @route  POST /api/tracker/add
+ * @route  POST /api/exercises/add
  * @access Public
  */
 const addExercise = async (req, res, next) => {
@@ -30,10 +62,11 @@ const addExercise = async (req, res, next) => {
 		if (!req.body.name || !req.body.muscleGroup) {
 			return res.status(400).json({
 				success: false,
-				error: 'Please provide a name and muscle group',
+				error: "Please provide a name and muscle group",
 			});
 		}
 		const exercise = await Exercise.create({
+			user: req.body.user,
 			name: req.body.name,
 			muscleGroup: req.body.muscleGroup,
 		});
@@ -42,7 +75,7 @@ const addExercise = async (req, res, next) => {
 			data: exercise,
 		});
 	} catch (err) {
-		if (err.name === 'ValidationError') {
+		if (err.name === "ValidationError") {
 			const messages = Object.values(err.errors).map((val) => val.message);
 			return res.status(400).json({
 				success: false,
@@ -51,22 +84,23 @@ const addExercise = async (req, res, next) => {
 		} else {
 			return res.status(500).json({
 				success: false,
-				error: 'Server Error',
+				error: "Server Error",
 			});
 		}
 	}
 };
 /**
  * @desc   Update an exercise
- * @route  PUT /api/tracker/update
+ * @route  PUT /api/exercises/update
  * @access Public
  */
 const updateExercise = async (req, res, next) => {
 	const name = req.body.name;
+	const user = req.body.user;
 	const muscleGroup = req.body.muscleGroup;
 	try {
 		const exercise = await Exercise.updateOne(
-			{ name: name },
+			{ name: name, user: user },
 			{ $set: { muscleGroup: muscleGroup } }
 		);
 		return res.status(200).json({
@@ -76,20 +110,21 @@ const updateExercise = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error',
+			error: "Server Error",
 			message: err.message,
 		});
 	}
 };
 /**
  * @desc   Delete an exercise
- * @route  Delete /api/tracker/delete
+ * @route  Delete /api/exercises/delete
  * @access Public
  */
 const deleteExercise = async (req, res, next) => {
 	const name = req.body.name;
+	const user = req.body.user;
 	try {
-		const exercise = await Exercise.deleteOne({ name: name });
+		const exercise = await Exercise.deleteOne({ name: name, user: user });
 		return res.status(200).json({
 			success: true,
 			data: exercise,
@@ -97,7 +132,7 @@ const deleteExercise = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: 'Server Error',
+			error: "Server Error",
 			message: err.message,
 		});
 	}
@@ -105,6 +140,7 @@ const deleteExercise = async (req, res, next) => {
 
 module.exports = {
 	getExercises,
+	getExercise,
 	addExercise,
 	updateExercise,
 	deleteExercise,

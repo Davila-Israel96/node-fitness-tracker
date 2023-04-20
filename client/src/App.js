@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route } from "react-router-dom";
@@ -7,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Exercises from "./pages/Exercises";
 
 function App() {
 	return (
@@ -16,6 +15,7 @@ function App() {
 				<Route path="/" element={<Dashboard />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<Login />} />
+				<Route path="/exercises" element={<Exercises />} />
 			</Routes>
 			<ToastContainer />
 		</div>

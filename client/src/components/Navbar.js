@@ -44,6 +44,11 @@ function Navbar() {
 								Logs
 							</Link>
 						</li>
+						<li className="nav-item text-light">
+							<Link className="nav-link" to="/exercises">
+								Exercises
+							</Link>
+						</li>
 					</ul>
 					<ul className="navbar-nav d-flex flex-row-reverse mb-2 mb-lg-0">
 						{user ? (

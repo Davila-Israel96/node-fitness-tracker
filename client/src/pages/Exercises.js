@@ -3,7 +3,6 @@ import { UserContext } from "../components/UserContext";
 import { ExerciseContext } from "../components/ExerciseContext";
 
 function Exercises() {
-	// const [exercises, setExercises] = useState([]);
 	const { user } = useContext(UserContext);
 	const { getExercises, exercises } = useContext(ExerciseContext);
 

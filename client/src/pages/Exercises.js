@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../components/UserContext";
-import { ExerciseContext } from "../components/ExerciseContext";
+import React, { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../components/UserContext';
+import { ExerciseContext } from '../components/ExerciseContext';
 
 function Exercises() {
 	const { user } = useContext(UserContext);

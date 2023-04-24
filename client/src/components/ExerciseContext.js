@@ -50,6 +50,7 @@ export const ExerciseContextProvider = ({ children }) => {
 		try {
 			const exercises = await exerciseService.getExercises(token);
 			dispatch({ type: "GET_EXERCISES", payload: exercises });
+			return exercises;
 		} catch (error) {
 			dispatch({ type: "ERROR", payload: error.message });
 		}

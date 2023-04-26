@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../components/UserContext";
 import { ExerciseContext } from "../components/ExerciseContext";
 import AddExercise from "../components/AddExercise";
+import { Card } from "../components/Card";
 
 function Exercises() {
 	const [list, setList] = useState([]);
@@ -22,9 +23,12 @@ function Exercises() {
 		}
 	};
 	useEffect(() => {
+		// if the exercises array is empty, they must be initialized
 		if (list.length === 0) {
 			fetchExercises().then((data) => setList(data));
-		} else {
+		}
+		// if the exercises array is not empty, they must have been updated
+		else {
 			setList(exercises);
 		}
 	}, [exercises]);

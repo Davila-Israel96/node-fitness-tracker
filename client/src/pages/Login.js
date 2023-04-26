@@ -38,7 +38,7 @@ function Login() {
 		if (user) {
 			navigate("/");
 		}
-	}, [user, isError, isSuccess, message, isLoading]);
+	}, [user, isError, isSuccess, message, isLoading, navigate]);
 
 	return (
 		<>

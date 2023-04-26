@@ -49,14 +49,26 @@ export const ExerciseContextProvider = ({ children }) => {
 	const getExercises = async (token) => {
 		try {
 			const exercises = await exerciseService.getExercises(token);
-			dispatch({ type: "GET_EXERCISES", payload: exercises });
-			return exercises;
+			dispatch({ type: "GET_EXERCISES", payload: exercises.data });
+			console.log("getExercises", exercises.data);
+			return exercises.data;
 		} catch (error) {
 			dispatch({ type: "ERROR", payload: error.message });
 		}
 	};
 
-	const value = { ...state, dispatch, getExercises };
+	const addExercise = async (data, token) => {
+		try {
+			const exercise = await exerciseService.addExercise(data, token);
+			dispatch({ type: "ADD_EXERCISE", payload: exercise.data });
+			console.log("addExercise", exercise.data);
+			return exercise.data;
+		} catch (error) {
+			dispatch({ type: "ERROR", payload: error.message });
+		}
+	};
+
+	const value = { ...state, dispatch, getExercises, addExercise };
 	return (
 		<ExerciseContext.Provider value={value}>
 			{children}

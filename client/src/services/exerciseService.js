@@ -28,14 +28,14 @@ const getExercise = async (data) => {
 };
 
 // Add an exercise for logged in user
-const addExercise = async (data) => {
+const addExercise = async (data, token) => {
 	const config = {
 		headers: {
-			Authorization: `Bearer ${data.token}`,
+			Authorization: `Bearer ${token}`,
 		},
 	};
 	const response = await axios.post(API_URL + "/add", data, config);
-
+	console.log(response.data);
 	return response.data;
 };
 

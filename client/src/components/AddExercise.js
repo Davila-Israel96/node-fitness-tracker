@@ -1,63 +1,82 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { toast } from "react-toastify";
+import { ExerciseContext } from "../components/ExerciseContext";
+import { UserContext } from "../components/UserContext";
 
-function AddExercise() {
+function AddExercise({ setAddForm }) {
+	const { addExercise } = useContext(ExerciseContext);
+	const { ...state } = useContext(UserContext);
+	const { user } = state;
+	const [input, setInput] = useState({
+		name: "",
+		muscleGroup: "",
+		user: user.name,
+	});
+
+	const onSubmit = async (e) => {
+		e.preventDefault();
+		const response = await addExercise(input, user.token);
+		if (response) {
+			toast.success("Exercise added successfully!");
+			setAddForm(false);
+		}
+	};
+	const handleChange = (e) => {
+		e.preventDefault();
+		setInput({ ...input, [e.target.name]: e.target.value });
+	};
+	const { name, muscleGroup } = input;
 	return (
-		<div class="modal" tabindex="-1">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Add an Exercise</h5>
-						<button
-							type="button"
-							class="btn-close"
-							data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<form>
-							<div class="mb-3">
-								<label for="exercise-name" class="col-form-label">
-									Exercise Name:
-								</label>
-								<input
-									type="text"
-									class="form-control"
-									id="exercise-name"></input>
-							</div>
-							<div class="mb-3">
-								<div class="dropdown">
-									<button
-										class="btn btn-secondary dropdown-toggle"
-										type="button"
-										id="dropdownMenuButton1"
-										data-bs-toggle="dropdown"
-										aria-expanded="false">
-										Dropdown button
-									</button>
-									<ul
-										class="dropdown-menu"
-										aria-labelledby="dropdownMenuButton1">
-										<li></li>
-										<li></li>
-										<li></li>
-									</ul>
-								</div>
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button
-							type="button"
-							class="btn btn-secondary"
-							data-bs-dismiss="modal">
-							Close
-						</button>
-						<button type="button" class="btn btn-primary">
-							Save changes
-						</button>
-					</div>
+		<div className="animate__animated animate__backInRight mx-auto card w-50">
+			<h1 className="card-header">Add An Exercise</h1>
+			<form className="card-body" onSubmit={onSubmit}>
+				<div className="mb-3">
+					<label htmlFor="exercise-name" className="col-form-label">
+						Exercise Name:
+					</label>
+					<input
+						type="text"
+						className="form-control w-50 mx-auto"
+						value={name}
+						id="name"
+						name="name"
+						onChange={handleChange}></input>
 				</div>
-			</div>
+				<div className="mb-3">
+					<label htmlFor="muscleGroup">
+						<strong>Muscle Group</strong>
+					</label>
+					<section>
+						<select
+							id="muscleGroup"
+							name="muscleGroup"
+							value={muscleGroup}
+							onChange={handleChange}>
+							<option value={"Arms"} className="dropdown-item">
+								Arms
+							</option>
+							<option value={"Chest"} className="dropdown-item">
+								Chest
+							</option>
+							<option value={"Legs"} className="dropdown-item">
+								Legs
+							</option>
+							<option value={"Back"} className="dropdown-item">
+								Back
+							</option>
+							<option value={"Shoulders"} className="dropdown-item">
+								Shoulders
+							</option>
+							<option value={"Core"} className="dropdown-item">
+								Core
+							</option>
+						</select>
+					</section>
+					<button className="btn btn-success mt-3" type="submit">
+						Submit
+					</button>
+				</div>
+			</form>
 		</div>
 	);
 }

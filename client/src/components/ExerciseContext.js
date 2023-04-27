@@ -31,6 +31,17 @@ const exerciseReducer = (state, action) => {
 				message: "Exercise added successfully",
 				exercises: [...state.exercises, action.payload],
 			};
+		case "DELETE_EXERCISE":
+			return {
+				...state,
+				isError: false,
+				isSuccess: true,
+				isLoading: false,
+				message: "Exercise deleted successfully",
+				exercises: state.exercises.filter(
+					(exercise) => exercise.name !== action.payload
+				),
+			};
 		case "ERROR":
 			return {
 				...state,
@@ -68,7 +79,24 @@ export const ExerciseContextProvider = ({ children }) => {
 		}
 	};
 
-	const value = { ...state, dispatch, getExercises, addExercise };
+	const deleteExercise = async (data, token) => {
+		try {
+			const exercise = await exerciseService.deleteExercise(data, token);
+			console.log("deleteExercise", data.name);
+			dispatch({ type: "DELETE_EXERCISE", payload: data.name });
+			return exercise.data;
+		} catch (error) {
+			dispatch({ type: "ERROR", payload: error.message });
+		}
+	};
+
+	const value = {
+		...state,
+		dispatch,
+		getExercises,
+		addExercise,
+		deleteExercise,
+	};
 	return (
 		<ExerciseContext.Provider value={value}>
 			{children}

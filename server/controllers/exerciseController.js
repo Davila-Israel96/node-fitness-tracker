@@ -98,6 +98,7 @@ const updateExercise = async (req, res, next) => {
 	const name = req.body.name;
 	const user = req.body.user;
 	const muscleGroup = req.body.muscleGroup;
+	const update = req.body;
 	try {
 		const exercise = await Exercise.updateOne(
 			{ name: name, user: user },

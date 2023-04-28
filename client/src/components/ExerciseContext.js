@@ -42,6 +42,17 @@ const exerciseReducer = (state, action) => {
 					(exercise) => exercise.name !== action.payload
 				),
 			};
+		case "UPDATE_EXERCISE":
+			return {
+				...state,
+				isError: false,
+				isSuccess: true,
+				isLoading: false,
+				message: "Exercise updated successfully",
+				exercises: state.exercises.map((exercise) =>
+					exercise.name === action.payload.name ? action.payload : exercise
+				),
+			};
 		case "ERROR":
 			return {
 				...state,
@@ -90,12 +101,24 @@ export const ExerciseContextProvider = ({ children }) => {
 		}
 	};
 
+	const updateExercise = async (data, token) => {
+		try {
+			const exercise = await exerciseService.updateExercise(data, token);
+			console.log("updateExercise", exercise.data);
+			dispatch({ type: "UPDATE_EXERCISE", payload: exercise.data });
+			return exercise.data;
+		} catch (error) {
+			dispatch({ type: "ERROR", payload: error.message });
+		}
+	};
+
 	const value = {
 		...state,
 		dispatch,
 		getExercises,
 		addExercise,
 		deleteExercise,
+		updateExercise,
 	};
 	return (
 		<ExerciseContext.Provider value={value}>

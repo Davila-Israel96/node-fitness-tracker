@@ -3,22 +3,22 @@ import { toast } from "react-toastify";
 import { ExerciseContext } from "../components/ExerciseContext";
 import { UserContext } from "../components/UserContext";
 
-function AddExercise({ setAddForm }) {
-	const { addExercise } = useContext(ExerciseContext);
+function EditExercise({ setEditView, exercise }) {
+	const { updateExercise } = useContext(ExerciseContext);
 	const { ...state } = useContext(UserContext);
 	const { user } = state;
 	const [input, setInput] = useState({
-		name: "",
-		muscleGroup: "Arms",
+		name: exercise.name,
+		muscleGroup: exercise.muscleGroup,
 		user: user.name,
 	});
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		const response = await addExercise(input, user.token);
+		const response = await updateExercise(input, user.token);
 		if (response) {
-			toast.success("Exercise added successfully!");
-			setAddForm(false);
+			toast.success("Exercise updated successfully!");
+			setEditView(false);
 		}
 	};
 	const handleChange = (e) => {
@@ -28,7 +28,7 @@ function AddExercise({ setAddForm }) {
 	const { name, muscleGroup } = input;
 	return (
 		<div className="animate__animated animate__backInRight mx-auto card w-50">
-			<h1 className="card-header">Add An Exercise</h1>
+			<h1 className="card-header">Edit An Exercise</h1>
 			<form className="card-body" onSubmit={onSubmit}>
 				<div className="mb-3">
 					<label htmlFor="exercise-name" className="col-form-label">
@@ -73,7 +73,7 @@ function AddExercise({ setAddForm }) {
 						</select>
 					</section>
 					<button className="btn btn-success mt-3" type="submit">
-						Submit
+						Update
 					</button>
 				</div>
 			</form>
@@ -81,4 +81,4 @@ function AddExercise({ setAddForm }) {
 	);
 }
 
-export default AddExercise;
+export default EditExercise;

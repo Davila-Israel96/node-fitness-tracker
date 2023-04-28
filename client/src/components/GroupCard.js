@@ -1,13 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ExerciseContext } from "./ExerciseContext";
 import { UserContext } from "./UserContext";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { toast } from "react-toastify";
+import EditExercise from "./EditExercise";
 
 function GroupCard({ title, exercises }) {
 	const { ...state } = useContext(UserContext);
 	const { user } = state;
 	const { deleteExercise } = useContext(ExerciseContext);
+	const [editView, setEditView] = useState(false);
+	const [input, setInput] = useState({
+		name: "",
+		muscleGroup: "Arms",
+		user: user.name,
+	});
+
 	const deleteListItem = async (name) => {
 		const data = {
 			name: name,
@@ -36,10 +44,22 @@ function GroupCard({ title, exercises }) {
 								<li className="d-flex justify-content-between" key={idx}>
 									{exercise.name}
 									<button
+										className="btn btn-sm text-primary"
+										onClick={() => setEditView(true)}>
+										Edit
+									</button>
+									<button
 										className="btn btn-sm text-danger"
 										onClick={() => deleteListItem(exercise.name)}>
 										<RiDeleteBin2Fill />
 									</button>
+									{editView ? (
+										<input className="form-control w-50 mx-auto" type="text">
+											{exercise.name}
+										</input>
+									) : (
+										<></>
+									)}
 								</li>
 							);
 						})}

@@ -54,9 +54,11 @@ function GroupCard({ title, exercises }) {
 										<RiDeleteBin2Fill />
 									</button>
 									{editView ? (
-										<input className="form-control w-50 mx-auto" type="text">
-											{exercise.name}
-										</input>
+										<input
+											className="form-control w-50 mx-auto"
+											type="text"
+											defaultValue={exercise.name}
+										/>
 									) : (
 										<></>
 									)}

@@ -1,9 +1,8 @@
 import React, { useContext, useState } from "react";
 import { ExerciseContext } from "./ExerciseContext";
 import { UserContext } from "./UserContext";
-import { RiDeleteBin2Fill } from "react-icons/ri";
+import Exercise from "./Exercise";
 import { toast } from "react-toastify";
-import EditExercise from "./EditExercise";
 
 function GroupCard({ title, exercises }) {
 	const { ...state } = useContext(UserContext);
@@ -30,7 +29,7 @@ function GroupCard({ title, exercises }) {
 		}
 		toast.success("Exercise deleted");
 	};
-
+	// create an exercise component with all the options within it. Duh.
 	return (
 		<div className="card mx-auto w-25">
 			<h1 className="card-header">{title}</h1>
@@ -41,27 +40,8 @@ function GroupCard({ title, exercises }) {
 					<ul>
 						{exercises.map((exercise, idx) => {
 							return (
-								<li className="d-flex justify-content-between" key={idx}>
-									{exercise.name}
-									<button
-										className="btn btn-sm text-primary"
-										onClick={() => setEditView(true)}>
-										Edit
-									</button>
-									<button
-										className="btn btn-sm text-danger"
-										onClick={() => deleteListItem(exercise.name)}>
-										<RiDeleteBin2Fill />
-									</button>
-									{editView ? (
-										<input
-											className="form-control w-50 mx-auto"
-											type="text"
-											defaultValue={exercise.name}
-										/>
-									) : (
-										<></>
-									)}
+								<li className="list-unstyled align-items-center" key={idx}>
+									<Exercise props={exercise} />
 								</li>
 							);
 						})}

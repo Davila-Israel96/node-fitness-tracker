@@ -96,13 +96,15 @@ const addExercise = async (req, res, next) => {
  */
 const updateExercise = async (req, res, next) => {
 	const name = req.body.name;
-	const user = req.body.user;
+	const user = req.user.name;
 	const muscleGroup = req.body.muscleGroup;
+	const updatedName = req.body.updatedName;
+	const updatedMuscleGroup = req.body.updatedMuscleGroup;
 	try {
 		// only name and muscleGroup can be updated
 		const exercise = await Exercise.updateOne(
 			{ name: name, user: user },
-			{ name: name, muscleGroup: muscleGroup }
+			{ name: updatedName, muscleGroup: updatedMuscleGroup }
 		);
 		return res.status(200).json({
 			success: true,

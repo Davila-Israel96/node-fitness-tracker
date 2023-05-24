@@ -9,11 +9,6 @@ function GroupCard({ title, exercises }) {
 	const { user } = state;
 	const { deleteExercise } = useContext(ExerciseContext);
 	const [editView, setEditView] = useState(false);
-	const [input, setInput] = useState({
-		name: "",
-		muscleGroup: "Arms",
-		user: user.name,
-	});
 
 	const deleteListItem = async (name) => {
 		const data = {
@@ -33,6 +28,11 @@ function GroupCard({ title, exercises }) {
 	return (
 		<div className="card mx-auto w-25">
 			<h1 className="card-header">{title}</h1>
+			<h6 className="card-subtitle text-muted mt-1 row">
+				<p className="col-4 text-center">Added</p>
+				<p className="col-4 text-center">Exercise</p>
+				<p className="col-4 text-center">Edit</p>
+			</h6>
 			<div className="card-body">
 				{exercises === undefined ? (
 					<></>

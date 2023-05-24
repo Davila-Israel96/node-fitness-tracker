@@ -55,7 +55,7 @@ const updateExercise = async (data, token) => {
 			Authorization: `Bearer ${token}`,
 		},
 	};
-	const response = await axios.post(API_URL + "/update", data, config);
+	const response = await axios.put(API_URL + "/update", data, config);
 	return response.data;
 };
 

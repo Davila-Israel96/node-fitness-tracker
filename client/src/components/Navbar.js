@@ -45,8 +45,8 @@ function Navbar() {
 							</Link>
 						</li>
 						<li className="nav-item text-light">
-							<Link className="nav-link" to="/exercises">
-								Exercises
+							<Link className="nav-link" to="/logs">
+								Logs
 							</Link>
 						</li>
 					</ul>

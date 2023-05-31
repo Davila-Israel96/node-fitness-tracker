@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const exerciseSchema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
-			required: [true, 'Please add a name'],
+			required: [true, "Please add a name"],
 		},
 		muscleGroup: {
 			type: String,
-			required: [true, 'Please add a muscle group'],
+			required: [true, "Please add a muscle group"],
 		},
 		setsDone: {
 			type: Number,
@@ -25,11 +25,11 @@ const exerciseSchema = new mongoose.Schema(
 
 // logSchema is a Map of exerciseSchema, so we'll be able to iterate through the map and access the exerciseSchema properties
 const logSchema = new mongoose.Schema({
-	user: {
-		type: mongoose.Schema.Types.ObjectId,
-		required: true,
-		ref: 'User',
-	},
+	// user: {
+	// 	type: mongoose.Schema.Types.ObjectId,
+	// 	required: true,
+	// 	ref: 'User',
+	// },
 	date: {
 		type: Date,
 		default: Date.now,
@@ -43,4 +43,4 @@ const logSchema = new mongoose.Schema({
 	},
 });
 
-module.exports = mongoose.model('Log', logSchema);
+module.exports = mongoose.model("Log", logSchema);

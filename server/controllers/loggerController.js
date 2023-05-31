@@ -8,7 +8,7 @@ const User = require("../models/usersModel");
 const getLogs = async (req, res, next) => {
 	try {
 		// get users logs
-		const logs = await Log.find({ user: req.user.id });
+		const logs = await Log.find({ user: req.user.name });
 		return res.status(200).json({
 			success: true,
 			count: logs.length,
@@ -33,7 +33,7 @@ const addLog = async (req, res, next) => {
 	try {
 		const log = await Log.create({
 			exerciseMap: req.body.exerciseMap,
-			user: req.user.id,
+			user: req.user.name,
 		});
 		return res.status(201).json({
 			success: true,

@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Exercises from "./pages/Exercises";
+import Logs from "./pages/Logs";
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/exercises" element={<Exercises />} />
+				<Route path="/logs" element={<Logs />} />
 			</Routes>
 			<ToastContainer />
 		</div>

@@ -1,4 +1,4 @@
-const Exercise = require("../models/exerciseModel");
+const Exercise = require('../models/exerciseModel');
 
 /**
  * @desc   Get all exercises for associated user
@@ -17,7 +17,7 @@ const getExercises = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: "Server Error",
+			error: 'Server Error',
 		});
 	}
 };
@@ -38,7 +38,7 @@ const getExercise = async (req, res, next) => {
 		if (!exercise) {
 			return res.status(404).json({
 				success: false,
-				error: "No exercise found",
+				error: 'No exercise found',
 			});
 		}
 		return res.status(200).json({
@@ -48,7 +48,7 @@ const getExercise = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: "Server Error",
+			error: 'Server Error',
 		});
 	}
 };
@@ -62,7 +62,7 @@ const addExercise = async (req, res, next) => {
 		if (!req.body.name || !req.body.muscleGroup) {
 			return res.status(400).json({
 				success: false,
-				error: "Please provide a name and muscle group",
+				error: 'Please provide a name and muscle group',
 			});
 		}
 		const exercise = await Exercise.create({
@@ -75,7 +75,7 @@ const addExercise = async (req, res, next) => {
 			data: exercise,
 		});
 	} catch (err) {
-		if (err.name === "ValidationError") {
+		if (err.name === 'ValidationError') {
 			const messages = Object.values(err.errors).map((val) => val.message);
 			return res.status(400).json({
 				success: false,
@@ -84,7 +84,7 @@ const addExercise = async (req, res, next) => {
 		} else {
 			return res.status(500).json({
 				success: false,
-				error: "Server Error",
+				error: 'Server Error',
 			});
 		}
 	}
@@ -113,7 +113,7 @@ const updateExercise = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: "Server Error",
+			error: 'Server Error',
 			message: err.message,
 		});
 	}
@@ -125,7 +125,7 @@ const updateExercise = async (req, res, next) => {
  */
 const deleteExercise = async (req, res, next) => {
 	const name = req.body.name;
-	const user = req.body.user;
+	const user = req.user.name;
 	try {
 		const exercise = await Exercise.deleteOne({ name: name, user: user });
 		return res.status(200).json({
@@ -135,7 +135,7 @@ const deleteExercise = async (req, res, next) => {
 	} catch (err) {
 		return res.status(500).json({
 			success: false,
-			error: "Server Error",
+			error: 'Server Error',
 			message: err.message,
 		});
 	}

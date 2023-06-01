@@ -1,31 +1,19 @@
 import React, { useState, useEffect } from "react";
 
 function LogComponent({ props }) {
-	const [exercises, setExercises] = useState([]);
-
-	const convertToArray = () => {
-		var exerciseMap = Object.keys(props).map((key) => {
-			return props[key];
-		});
-		setExercises(exerciseMap);
-	};
-
-    useEffect(() => {
-        convertToArray();
-    }, [])
 	console.log("props", props);
 	return (
-		<div className="list-group">
-			{exercises.map((log) => {
+		<div className="text-center">
+			{props.map((log) => {
 				return (
-					<div className="list-group-item">
-						<h6 className="mb-1">{log.name}</h6>
-						<ul>
-							<li>Sets: {log.setsDone}</li>
-							<li>Reps: {log.repsDone}</li>
-							<li>Weight: {log.weightUsed}</li>
+					<>
+						<h6 className="my-3 fw-bold">{log.name}</h6>
+						<ul className="list-group my-2 w-50 mx-auto">
+							<li className="list-group-item">Sets: {log.setsDone}</li>
+							<li className="list-group-item">Reps: {log.repsDone}</li>
+							<li className="list-group-item">Weight: {log.weightUsed}</li>
 						</ul>
-					</div>
+					</>
 				);
 			})}
 		</div>

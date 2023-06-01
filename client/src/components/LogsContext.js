@@ -78,9 +78,26 @@ export const LogsContextProvider = ({ children }) => {
 		}
 	};
 
+	const addLog = async (logName, data, token) => {
+		try {
+			var toServer = {
+				logName: logName,
+				exerciseMap: data,
+			};
+			const response = await logsService.addLog(toServer, token);
+			dispatch({ type: "ADD_LOG", payload: response.data });
+			console.log("addLog", response.data);
+			return response.data;
+		} catch (err) {
+			dispatch({ type: "ERROR", payload: err.message });
+			console.log("addLog error", err.message);
+		}
+	};
+
 	const value = {
 		...state,
 		getLogs,
+		addLog,
 	};
 	return <LogsContext.Provider value={value}>{children}</LogsContext.Provider>;
 };

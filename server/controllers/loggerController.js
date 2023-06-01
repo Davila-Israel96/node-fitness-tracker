@@ -33,6 +33,7 @@ const addLog = async (req, res, next) => {
 	try {
 		const log = await Log.create({
 			exerciseMap: req.body.exerciseMap,
+			logName: req.body.logName,
 			user: req.user.name,
 		});
 		return res.status(201).json({

@@ -24,6 +24,7 @@ export const addLog = async (data, token) => {
 
 const logsService = {
 	getLogs,
+	addLog,
 };
 
 export default logsService;

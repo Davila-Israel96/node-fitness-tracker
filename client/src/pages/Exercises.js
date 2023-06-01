@@ -55,7 +55,7 @@ function Exercises() {
 						<h2>Loading...</h2>
 					) : (
 						<div>
-							<div className="d-flex justify-content-around my-3">
+							<div className="d-flex justify-content-lg-around my-3">
 								<GroupCard exercises={list.Chest} title={"Chest"} />
 								<GroupCard exercises={list.Arms} title={"Arms"} />
 								<GroupCard exercises={list.Shoulders} title={"Shoulders"} />
